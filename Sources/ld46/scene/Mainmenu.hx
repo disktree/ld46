@@ -69,7 +69,7 @@ class Mainmenu extends Trait {
 
 	function loadScene( name : String ) {
 		Scene.setActive( name, obj -> {
-			trace( "scene activated:. "+obj );
+			//trace( "scene activated:. "+obj );
 		} );
 	}
 

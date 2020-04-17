@@ -8,17 +8,17 @@ class Boot extends Trait {
 		super();
 		notifyOnInit( () -> {
 			
-			#if !dev
+			//#if !dev
 			Data.getSound( 'boot.wav', (s:kha.Sound) -> {
 				var channel = Audio.play( s, false, true );
 				channel.volume = 0.7;
 			});
-			#end
+			//#end
 
 			timer = Tween.timer( 1, () -> {
 				resume();
 			});
-			
+
 			notifyOnUpdate( () -> {
 				var keyboard = Input.getKeyboard();
 				var mouse = Input.getMouse();
