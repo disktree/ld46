@@ -15,7 +15,7 @@ class Mainmenu extends Trait {
 	
 	function init() {
 		
-		trace( "Mainmenu.init" );
+		trace( "init" );
 		
 		/*
 		canvas = Scene.active.getTrait( CanvasScript );
@@ -24,17 +24,8 @@ class Mainmenu extends Trait {
 		});
 		*/
 		
-		//Data.getFont("font_default.ttf", function(f:kha.Font) {
-		///Data.getFont("BDGem.ttf", function(f:kha.Font) {
-		Data.getFont("helvetica_neue_75.ttf", function(f:kha.Font) {
-			ui = new Zui( {
-				font: f,
-				//theme: App.UI_THEME
-			} );
-			//ui.ops.theme = App.UI_THEME;
-			//trace(ui.ops.theme);
-		});
-		
+		UI.create( ui -> this.ui = ui );
+
 		Event.add( "play", () -> loadScene( 'Game' ) );
 		Event.add( "quit", App.quit );
 		
@@ -52,6 +43,7 @@ class Mainmenu extends Trait {
 
 		if( keyboard.started( "escape" ) ) {
 			App.quit();
+			//SoundEffect.load('boot', s -> s.play() );
 		}
 	}
 
@@ -77,7 +69,7 @@ class Mainmenu extends Trait {
 
 	function loadScene( name : String ) {
 		Scene.setActive( name, obj -> {
-			trace("DONNE",obj);
+			trace( "scene activated:. "+obj );
 		} );
 	}
 
