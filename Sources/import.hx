@@ -1,6 +1,9 @@
 
 import armory.system.Event;
 
+import haxe.Json;
+import haxe.io.Bytes;
+
 import iron.Scene;
 import iron.Trait;
 import iron.data.Data;
