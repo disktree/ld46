@@ -13,6 +13,8 @@ class Game extends Trait {
 	function init() {
 		
 		trace( "init" );
+
+		Scene.active.camera = Scene.active.getCamera( 'Camera_Game' );
 		
 		notifyOnUpdate( update );
 	}

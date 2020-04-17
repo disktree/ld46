@@ -16,6 +16,8 @@ class Mainmenu extends Trait {
 	function init() {
 		
 		trace( "init" );
+
+		Scene.active.camera = Scene.active.getCamera( 'Camera_Mainmenu' );
 		
 		/*
 		canvas = Scene.active.getTrait( CanvasScript );

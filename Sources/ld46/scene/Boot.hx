@@ -31,6 +31,10 @@ class Boot extends Trait {
 
 	function init() {
 
+		trace( "init" );
+
+		Scene.active.camera = Scene.active.getCamera( 'Camera_Boot' );
+
 		Data.getSound( 'boot.wav', (s:kha.Sound) -> {
 			var channel = Audio.play( s, false, true );
 			channel.volume = 0.7;
