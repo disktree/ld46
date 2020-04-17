@@ -35,6 +35,7 @@ project.addAssets("/home/tong/sdk/ArmorySDK/armory/Assets/hosek/hosek_radiance_6
 project.addAssets("/home/tong/sdk/ArmorySDK/armory/Assets/hosek/hosek_radiance_7.hdr", { notinlist: true });
 project.addAssets("/home/tong/sdk/ArmorySDK/armory/Assets/smaa_area.png", { notinlist: true });
 project.addAssets("/home/tong/sdk/ArmorySDK/armory/Assets/smaa_search.png", { notinlist: true });
+project.addAssets("Assets/boot_white.png", { notinlist: true });
 project.addAssets("Bundled/canvas/MainmenuCanvas.files", { notinlist: true });
 project.addAssets("Bundled/canvas/MainmenuCanvas.json", { notinlist: true });
 project.addAssets("Bundled/canvas/_themes.json", { notinlist: true });
