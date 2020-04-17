@@ -45,7 +45,6 @@ class Mainmenu extends Trait {
 
 		if( keyboard.started( "escape" ) ) {
 			App.quit();
-			//SoundEffect.load('boot', s -> s.play() );
 		}
 	}
 
