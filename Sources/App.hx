@@ -12,6 +12,8 @@ class App {
 	}
 	
 	static inline function __init__() {
+		#if kha_krom
 		Krom.log( '${App.NAME} - v${App.VERSION}' );
+		#end
 	}
 }

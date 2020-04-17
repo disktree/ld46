@@ -51,11 +51,13 @@ class Game extends Trait {
 	}
 
 	function loadState() {
+		#if kha_krom
 		Data.getBlob( STATE_FILE, b -> {
 			var state = Json.parse( b.toString() );
 			//TODO
 			trace(state);
 		});
+		#end
 	}
 	
 }
