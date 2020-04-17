@@ -37,7 +37,7 @@ class UI {
 		FILL_WINDOW_BG: false,
 		FILL_BUTTON_BG: true,
 		FILL_ACCENT_BG: false,
-		LINK_STYLE: Line,
+		//LINK_STYLE: Line,
 	};
 
 	public static function create( callback : Zui->Void ) {
