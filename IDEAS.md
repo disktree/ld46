@@ -55,4 +55,16 @@ Same as **Ambulance** but you have to set fire around the town, competing agains
 * View: 
 * Goals:
  - Administer CPR to keep them alive
+ 
+ ---
+
+## Keeping a plant alive
+
+---
+
+## Keeping an animal alive
+
+---
+
+## Keeping a monster alive
 
