@@ -8,10 +8,12 @@
 * Goals:
  - Pick up people from the area and rush them into hospital before they die.
  - Do not run over people on the street.
+ - Do not crash
  - Avoid traffic jams
  - Compete with other drivers (from other hospitals)
  - Corrupt other drivers (street blockades)
 * Style: Simpsons/Springfield comic style http://hello.eboy.com/eboy/2019/11/04/mixc-world-shenzhen/
+* See: https://www.youtube.com/watch?v=AebU2tTKSts
 
 ---
 
