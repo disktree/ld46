@@ -71,9 +71,11 @@ class Mainmenu extends Trait {
 		if( keyboard.started( "escape" ) ) {
 			App.quit();
 		}
-		if( keyboard.started( "space" ) ) {
+		/*
+		if( keyboard.started( "space" ) || mouse.down() || gamepad.started("a") ) {
 			loadScene( 'Game' );
 		}
+		*/
 	}
 
 	function render2D( g : kha.graphics2.Graphics ) {
@@ -101,6 +103,12 @@ class Mainmenu extends Trait {
 						*/
 						RenderPathCreator.applyConfig();
 						Config.save();
+					}
+					if( ui.button( 'PLAY' ) ) {
+						loadScene( 'Game' );
+					}
+					if( ui.button( 'QUIT' ) ) {
+						App.quit();
 					}
 				}
 			}
