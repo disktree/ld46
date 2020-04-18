@@ -2,6 +2,9 @@ package ld46.scene;
 
 import armory.trait.internal.CanvasScript;
 import iron.system.Storage;
+import ld46.game.Ambulance;
+import ld46.game.Mission;
+import ld46.game.Sickness;
 import zui.*;
 
 using armory.object.TransformExtension;
@@ -13,22 +16,23 @@ typedef State = {
 
 class Game extends Trait {
 
+	#if kha_krom
+	//static final STATE_FILE = Krom.getFilesLocation()+'/state.json';
+	#end
+
 	var time = 0.0;
-	var ambulance : MeshObject;
 	var cameraTarget : Object;
-	var triggers : Array<Transform>;
-	var activeTrigger : Int;
-	var sickness : Sickness;
+	var arrow : MeshObject;
+	var ambulance : Ambulance;
+	var missions : Array<Mission>;
+	var maxMissions = 3;
+	//var sickness : Sickness;
 
 	public function new() {
 		super();
 		notifyOnInit( init );
-		notifyOnAdd( () -> {
-			trace("ADD");
-		});
 		notifyOnRemove( () -> {
 			saveState();
-			//Input.getMouse().unlock();
 		} );
 	}
 	
@@ -36,31 +40,30 @@ class Game extends Trait {
 		
 		trace( "init" );
 		
-		time = 0.0;
+		var scene = Scene.active;
 
-		Scene.active.camera = Scene.active.getCamera( 'Camera_Game' );
-		//Input.getMouse().lock();
-
-		ambulance = Scene.active.getMesh( "Ambulance" );
-		cameraTarget = Scene.active.getEmpty( "CameraTarget" );
+		scene.camera = scene.getCamera( 'Camera_Game' );
 		
-		sickness = new Sickness();
+		cameraTarget = scene.getEmpty( "CameraTarget" );
+		arrow = scene.getMesh( "DirectionArrow" );
+		ambulance = new Ambulance( scene.getMesh( "Ambulance" ) );
 
-		triggers = [];
+		//sickness = new Sickness();
+
+		/* triggers = [];
 		var i = 0;
 		while( true ) {
-			var tr = Scene.active.getChild( 'Trigger'+i );
+			var tr = scene.getChild( 'Trigger'+i );
 			if( tr == null ) break else triggers.push( tr.transform );
 			i++;
 		}
-		trace(triggers.length+' triggers found' );
+		trace(triggers.length+' triggers found' ); */
 
-		//trace(Scene.active.getChild( 'Trigger1' ) );
-		//Event.add( "play", () -> gotoScene( 'Game' ) );
-		
 		//var state = loadState();
-		///trace(state); //TODO
 
+		missions = [];
+		createMission();
+		
 		notifyOnUpdate( update );
 	}
 
@@ -70,28 +73,59 @@ class Game extends Trait {
 		time += delta;
 		//var sec = Std.int( time );
 		//var ms = Std.int( (time - sec) * 100);
-
+		
 		var gamepad = Input.getGamepad( 0 );
 		var keyboard = Input.getKeyboard();
 		var mouse = Input.getMouse();
-
+		
 		if( keyboard.started( "escape" ) ) {
 			Scene.setActive( "Mainmenu" );
 			return;
 		}
+		
+		var camera = Scene.active.camera;
+		
+		camera.transform.loc.x = ambulance.object.transform.loc.x;
+		camera.transform.loc.y = ambulance.object.transform.loc.y;
+		camera.transform.buildMatrix();
+	
+		//sickness.update( time );
 
-		Scene.active.camera.transform.loc.x = ambulance.transform.loc.x;
-		Scene.active.camera.transform.loc.y = ambulance.transform.loc.y;
-		Scene.active.camera.transform.buildMatrix();
-		//cameraTarget.transform.loc = ambulance.transform.loc;
-		//cameraTarget.transform.buildMatrix();
+		for( mission in missions ) {
+			mission.update();
+			if( mission.health <= 0 ) {
+				trace("Mission failed");
+				mission.end();
+				missions.remove( mission );
+				mission = null;
+			} else {
+				
+				var direction = ambulance.object.transform.world.getLoc().sub( mission.trigger.transform.world.getLoc() );
+				var angleZ = Math.atan( direction.y / direction.x ) + PI2;
+				if( direction.x < 0 ) angleZ += Math.PI;
+				arrow.transform.loc.set( ambulance.loc.x, ambulance.loc.y, 3 );
+				arrow.transform.setRotation( 0, 0, angleZ );
+				
+				var distanceToMission = ambulance.distanceTo( mission.loc );
+				if( distanceToMission <= 15 ) {
+					trace("NEAR MISSION GOAL");
+					if( mission.arrived( ambulance.object ) ) {
+						trace("ARRIVED AT MISSION");
+						mission.end();
+						missions.remove( mission );
+						mission = null;
+					}
+				}
+			}
+		}
 
-		sickness.update( time );
+		ambulance.update();
 
+		/*
 		activeTrigger = null;
 		for( i in 0...triggers.length ) {
 			var tr = triggers[i];
-			if( ambulance.transform.overlap( tr ) ) {
+			if( ambulance.object.transform.overlap( tr ) ) {
 				//Event.send( 'trigger_$i' );
 				activeTrigger = i;
 				break;
@@ -100,6 +134,15 @@ class Game extends Trait {
 		if( activeTrigger != null ) {
 			trace("Trigger "+activeTrigger );
 		}
+		*/
+	}
+
+	///TODO random select from a list of mission origin objects in world 
+	function createMission() {
+		//var px = Math.random();
+		var mission = new Mission( new Vec3( 10, 15 ), 1.0, 0.5 );
+		missions.push( mission );
+		return mission;
 	}
 	
 	function saveState() {
