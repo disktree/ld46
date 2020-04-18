@@ -72,3 +72,23 @@ Same as **Ambulance** but you have to set fire around the town, competing agains
 
 ## Keeping a monster alive
 
+--- 
+
+## Labyrinth
+
+* Type: Racing
+* View: isometric
+* Goals:
+ - Follow a "light" threw a Racetrack labyrinth (e.g. Pacman) 
+ - The Light makes random turns on each corner
+ - Loose Health if you are too far away from light
+* Comments:
+ - Could be a multiuser game (on the same screen) 
+ - the range where you wouldn't loose life could be large enough to drive on a parallal side road (allowing multiple "correct" tracks)
+ - Camera should try to keep player and light in the same view
+ - there could be health packs appearing (and weapons)
+ 
+  
+---
+
+## …
