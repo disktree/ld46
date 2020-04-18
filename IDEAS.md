@@ -11,6 +11,13 @@
  - Avoid traffic jams
  - Compete with other drivers (from other hospitals)
  - Corrupt other drivers (street blockades)
+Style: Simpsons/Springfield comic style http://hello.eboy.com/eboy/2019/11/04/mixc-world-shenzhen/
+
+---
+
+## Fahrenheit
+
+Same as **Ambulance** but you have to set fire around the town, competing against the fire brigade.
 
 ---
 
@@ -26,4 +33,26 @@
 
 ---
 
-## …
+## Hero Core
+
+* Type: Music/Rythmn game
+* View: 
+* Goals:
+ - Operate a abstract machine playing (endless) music
+ - Never let the music stop
+
+---
+
+## Keeping a planet alive
+
+?
+
+---
+
+## CPR
+
+* Type: Rythmn game
+* View: 
+* Goals:
+ - Administer CPR to keep them alive
+
