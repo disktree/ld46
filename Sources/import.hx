@@ -7,6 +7,7 @@ import haxe.io.Bytes;
 import iron.Scene;
 import iron.Trait;
 import iron.data.Data;
+import iron.math.Vec3;
 import iron.math.Vec4;
 import iron.object.Object;
 import iron.object.MeshObject;

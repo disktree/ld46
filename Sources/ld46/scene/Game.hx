@@ -18,6 +18,7 @@ class Game extends Trait {
 	var cameraTarget : Object;
 	var triggers : Array<Transform>;
 	var activeTrigger : Int;
+	var sickness : Sickness;
 
 	public function new() {
 		super();
@@ -43,6 +44,8 @@ class Game extends Trait {
 		ambulance = Scene.active.getMesh( "Ambulance" );
 		cameraTarget = Scene.active.getEmpty( "CameraTarget" );
 		
+		sickness = new Sickness();
+
 		triggers = [];
 		var i = 0;
 		while( true ) {
@@ -77,8 +80,13 @@ class Game extends Trait {
 			return;
 		}
 
-		cameraTarget.transform.loc = ambulance.transform.loc;
-		cameraTarget.transform.buildMatrix();
+		Scene.active.camera.transform.loc.x = ambulance.transform.loc.x;
+		Scene.active.camera.transform.loc.y = ambulance.transform.loc.y;
+		Scene.active.camera.transform.buildMatrix();
+		//cameraTarget.transform.loc = ambulance.transform.loc;
+		//cameraTarget.transform.buildMatrix();
+
+		sickness.update( time );
 
 		activeTrigger = null;
 		for( i in 0...triggers.length ) {
