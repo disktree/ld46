@@ -26,21 +26,18 @@ class Boot extends Trait {
 		//UI.create( UI.THEME_BOOT, ui -> this.ui = ui );
 
 		//Data.getImage( 'boot.jpg', img -> this.img = img );
+		
+		Data.getSound( 'boot.wav', s -> {
 
-		/*
-		//#if !dev
-		Data.getSound( 'boot.wav', (s:kha.Sound) -> {
 			var channel = Audio.play( s, false, true );
 			channel.volume = 0.7;
-		});
-		//#end
-		*/
-		
-		notifyOnUpdate( update );
-		//notifyOnRender2D( render2D );
-		
-		timer = Tween.timer( 3, () -> {
-			resume();
+	
+			notifyOnUpdate( update );
+			//notifyOnRender2D( render2D );
+			
+			timer = Tween.timer( 3, () -> {
+				resume();
+			});
 		});
 	}
 

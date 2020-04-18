@@ -36,8 +36,11 @@ project.addAssets("/home/tong/sdk/ArmorySDK/armory/Assets/hosek/hosek_radiance_6
 project.addAssets("/home/tong/sdk/ArmorySDK/armory/Assets/hosek/hosek_radiance_7.hdr", { notinlist: true });
 project.addAssets("/home/tong/sdk/ArmorySDK/armory/Assets/smaa_area.png", { notinlist: true });
 project.addAssets("/home/tong/sdk/ArmorySDK/armory/Assets/smaa_search.png", { notinlist: true });
+project.addAssets("Bundled/config.arm", { notinlist: true });
 project.addAssets("Bundled/font/helvetica_neue_75.ttf", { notinlist: false });
 project.addAssets("Bundled/index.html", { notinlist: true });
+project.addAssets("Bundled/sound/boot.wav", { notinlist: true , quality: 0.8999999761581421});
+project.addAssets("Bundled/sound/mainmenu_ambient.wav", { notinlist: true , quality: 0.8999999761581421});
 project.addShaders("/home/tong/sdk/ArmorySDK/armory/Shaders/debug_draw/**");
 project.addParameter('--times');
 project.addLibrary("/home/tong/sdk/ArmorySDK/lib/zui");
@@ -56,10 +59,11 @@ project.addDefine('rp_render_to_texture');
 project.addDefine('rp_compositornodes');
 project.addDefine('rp_antialiasing=SMAA');
 project.addDefine('rp_supersampling=1');
-project.addDefine('rp_ssgi=SSAO');
+project.addDefine('rp_ssgi=RTAO');
 project.addDefine('rp_voxelao');
 project.addDefine('rp_voxelgi_resolution=64');
 project.addDefine('rp_voxelgi_resolution_z=0.5');
+project.addDefine('rp_dynres');
 project.addDefine('arm_audio');
 project.addDefine('arm_physics');
 project.addDefine('arm_bullet');
@@ -69,6 +73,7 @@ project.addDefine('arm_debug');
 project.addDefine('arm_ui');
 project.addDefine('arm_skin');
 project.addDefine('arm_particles');
+project.addDefine('arm_config');
 
 ///// LD46 - DEV ------------------
 

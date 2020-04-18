@@ -1,3 +1,4 @@
 _*
 *.blend[0-9]
 build_*/
+/icon.png
