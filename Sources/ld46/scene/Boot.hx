@@ -8,6 +8,8 @@ import zui.Zui;
 
 class Boot extends Trait {
 
+	static inline var TIMEOUT = 3.0;
+
 	var ui : Zui;
 	//var img : Image;
 	var timer : TAnim;
@@ -26,28 +28,26 @@ class Boot extends Trait {
 		//UI.create( UI.THEME_BOOT, ui -> this.ui = ui );
 
 		//Data.getImage( 'boot.jpg', img -> this.img = img );
+		
+		Data.getSound( 'boot.wav', s -> {
 
-		/*
-		//#if !dev
-		Data.getSound( 'boot.wav', (s:kha.Sound) -> {
-			var channel = Audio.play( s, false, true );
-			channel.volume = 0.7;
-		});
-		//#end
-		*/
-		
-		notifyOnUpdate( update );
-		//notifyOnRender2D( render2D );
-		
-		timer = Tween.timer( 3, () -> {
-			resume();
+//			var channel = Audio.play( s, false, true );
+//			channel.volume = 0.7;
+	
+			notifyOnUpdate( update );
+			//notifyOnRender2D( render2D );
+			
+			timer = Tween.timer( TIMEOUT, () -> {
+				resume();
+			});
 		});
 	}
 
 	function update() {
+		var gamepad = Input.getGamepad( 0 );
 		var keyboard = Input.getKeyboard();
 		var mouse = Input.getMouse();
-		if( keyboard.started('space') || mouse.started() ) {
+		if( keyboard.started('space') || mouse.started() || gamepad.started("a") ) {
 			resume();
 		}
 	}

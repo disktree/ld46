@@ -15,13 +15,12 @@ class Game extends Trait {
 	//static final STATE_FILE = Krom.getFilesLocation()+'/state.json';
 	#end
 
-	var monkey : MeshObject;
-
 	public function new() {
 		super();
 		notifyOnInit( init );
 		notifyOnRemove( () -> {
 			saveState();
+			//Input.getMouse().unlock();
 		} );
 	}
 	
@@ -30,12 +29,11 @@ class Game extends Trait {
 		trace( "init" );
 		
 		Scene.active.camera = Scene.active.getCamera( 'Camera_Game' );
+		//Input.getMouse().lock();
 		
 		var state = loadState();
 		trace(state); //TODO
 
-		monkey = Scene.active.getMesh('Suzanne');
-		
 		notifyOnUpdate( update );
 	}
 
@@ -48,8 +46,6 @@ class Game extends Trait {
 		if( keyboard.started( "escape" ) ) {
 			Scene.setActive( "Mainmenu" );
 		}
-
-		monkey.transform.rotate( Vec4.zAxis(), 0.01 );
 	}
 	
 	function saveState() {
