@@ -11,7 +11,7 @@
  - Avoid traffic jams
  - Compete with other drivers (from other hospitals)
  - Corrupt other drivers (street blockades)
-Style: Simpsons/Springfield comic style http://hello.eboy.com/eboy/2019/11/04/mixc-world-shenzhen/
+* Style: Simpsons/Springfield comic style http://hello.eboy.com/eboy/2019/11/04/mixc-world-shenzhen/
 
 ---
 
@@ -55,8 +55,10 @@ Same as **Ambulance** but you have to set fire around the town, competing agains
 * View: 
 * Goals:
  - Administer CPR to keep them alive
- 
- ---
+* Style: http://tmp.disktree.net/blend/covid-19/covid19-laying_seizure.mp4
+* See: https://www.mixamo.com/#/
+
+---
 
 ## Keeping a plant alive
 
