@@ -12,8 +12,18 @@
  - Avoid traffic jams
  - Compete with other drivers (from other hospitals)
  - Corrupt other drivers (street blockades)
+ - Refuel your car at gas stations
+ - Upgrade your car (faster, more capacity)
+ - Pickup several patients at once if your car has enough capacity
+ - Drop patients (to pick other ones)
+ - High profile patients (children, mayor, the president, .. )
+ - Honk to get people, cars out of way
+ - Run over people to make them patients, if you get seen police will be after you
+ - Police will follow you if you are crazy fast and no patient on board
+ - Jam the radio of other ambulances
 * Style: Simpsons/Springfield comic style http://hello.eboy.com/eboy/2019/11/04/mixc-world-shenzhen/
-* See: https://www.youtube.com/watch?v=AebU2tTKSts
+
+
 
 ---
 
