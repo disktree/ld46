@@ -1,5 +1,6 @@
 _*
 *.blend[0-9]
 *.zip
+/Data
 /build*/
 /icon.png

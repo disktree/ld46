@@ -1,10 +1,11 @@
 
+import kha.Font;
 import zui.Zui;
 import zui.Themes;
 
 class UI {
 
-	public static final FONT = "helvetica_neue_75.ttf";
+	public static final FONT_DEFAULT = "helvetica_neue_75.ttf";
 
 	public static final THEME_DEFAULT : TTheme = {
 		NAME: "Default Theme",
@@ -74,15 +75,29 @@ class UI {
 		//LINK_STYLE: Line,
 	};
 
-	public static function create( ?theme : TTheme, callback : Zui->Void ) {
+	static var fonts = new Map<String,Font>();
+
+	public static function create( ?fontName : String, ?theme : TTheme, callback : Zui->Void ) {
+		
+		if( fontName == null ) fontName = FONT_DEFAULT;
 		if( theme == null ) theme = THEME_DEFAULT;
-		Data.getFont( FONT, function(f:kha.Font) {
+
+		function createUI( f : Font ) {
 			var ui = new Zui( {
 				font: f,
 				theme: theme // now working
 			} );
 			ui.ops.theme = theme;
-			callback( ui );
-		});
+			return ui;
+		}
+
+		if( fonts.exists( fontName )) {
+			callback( createUI( fonts.get( fontName ) ) );
+		} else {
+			Data.getFont( fontName, f -> {
+				callback( createUI( f ) );
+			});
+		}
 	}
+
 }
