@@ -77,6 +77,26 @@ class UI {
 
 	static var fonts = new Map<String,Font>();
 
+	public var visible : Bool;
+
+	var ui : Zui;
+
+	function new( visible = true ) {
+		this.visible = visible;
+	}
+
+	public function render( g : kha.graphics2.Graphics ) {
+		if( !visible || ui == null )
+			return;
+		g.end();
+		ui.begin( g );
+		renderGraphics( g );
+		ui.end();
+		g.begin( false );
+	}
+
+	function renderGraphics( g : kha.graphics2.Graphics ) {}
+
 	public static function create( ?fontName : String, ?theme : TTheme, callback : Zui->Void ) {
 		
 		if( fontName == null ) fontName = FONT_DEFAULT;

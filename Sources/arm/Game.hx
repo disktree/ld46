@@ -118,9 +118,9 @@ class Game extends Trait {
 
 		targets = [for(i in 0...minConcurrentTargets) createTarget() ];
 
-		hud = new HUD();
-		log = new Log();
-		//for( i in 0...1 ) log.print("DISKTREE");
+		hud = new HUD( "CROSS" );
+		log = new Log( false );
+		//for( i in 0...100 ) log.log(i+" DISKTREE");
 		//log.clear();
 
 		SoundEffect.load( 'traffic', s -> ambientSound = s.play( 0.3, true ) );
@@ -271,7 +271,7 @@ class Game extends Trait {
 						if( target.trigger.transform.overlap( ambulance.object.transform ) ) {
 							ambulance.patient = target.pick();
 							targets.remove( target );
-							log.print( ' picked up patient' );
+							log.log( ' picked up patient' );
 						}
 					}
 				}
@@ -284,7 +284,7 @@ class Game extends Trait {
 					var patient = ambulance.patient;
 					ambulance.patient = null;
 					hospital.admitPatient( patient );
-					log.print( 'patient -> '+hospital.id+'['+hospital.numPatients+']' );
+					log.log( 'patient -> '+hospital.id+'['+hospital.numPatients+']' );
 				}
 				//if( target.trigger.transform.overlap( ambulance.object.transform ) ) {
 			}
@@ -299,7 +299,7 @@ class Game extends Trait {
 		info += hospitals.length+' HOSPITALS\n';
 		for( h in hospitals ) info += h.id+'\n';
 		if( ambulance.patient != null ) info += 'PATIENT: '+ambulance.patient+'\n';
-		hud.text = info;
+	//	hud.text = info;
 
 		/*
 		switch ambulance.state {

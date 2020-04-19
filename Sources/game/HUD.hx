@@ -3,7 +3,7 @@ package game;
 import zui.*;
 import zui.Themes;
 
-class HUD {
+class HUD extends UI {
 
 	static final THEME : TTheme = {
 		NAME: "HUD Theme",
@@ -26,7 +26,7 @@ class HUD {
 		FILL_ACCENT_BG: false,
 		FILL_BUTTON_BG: true,
 		FILL_WINDOW_BG: false,
-		FONT_SIZE: 16,
+		FONT_SIZE: 24,
 		HIGHLIGHT_COL: 0xff205d9c,
 		LABEL_COL: 0xffc8c8c8,
 		PANEL_BG_COL: 0xff3b3b3b,
@@ -34,7 +34,7 @@ class HUD {
 		SEPARATOR_COL: 0xff272727,
 		TAB_W: 8,
 		//TEXT_COL: 0xffe8e7e5,
-		TEXT_COL: 0xff000000,
+		TEXT_COL: 0xffffffff,
 		TEXT_OFFSET: 8,
 		//WINDOW_BG_COL: 0x99000000,
 		WINDOW_BG_COL: 0x00000000,
@@ -43,21 +43,16 @@ class HUD {
 
 	public var text = "ANTRUM";
 
-	var ui : Zui;
-
-	public function new() {
+	public function new( ?visible : Bool, text = "" ) {
+		super( visible );
+		this.text = text;
 		UI.create( THEME, ui -> this.ui = ui );
 	}
 
-	public function render( g : kha.graphics2.Graphics ) {
-		g.end();
-		if( ui != null ) {
-			ui.begin( g );
-			if( ui.window( Id.handle(), 0, 0, 600, 100, false ) ) {
-				ui.text( text );
-			}
-			ui.end();
+	override function renderGraphics( g : kha.graphics2.Graphics ) {
+		if( ui.window( Id.handle(), 0, 0, 600, 100, false ) ) {
+			ui.text( text );
 		}
-		g.begin( false );
 	}
+
 }
