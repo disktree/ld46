@@ -1,4 +1,7 @@
 
-# LD46
+# ANTRUM
 
-[![Gitter](https://badges.gitter.im/tong/ld46.svg)](https://gitter.im/tong/ld46)
+Ludum Dare 46 entry.
+
+http://games.disktree.net/antrum
+https://github.com/disktree/antrum

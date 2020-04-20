@@ -14,7 +14,7 @@ class Mainmenu extends Trait {
 		[1280,720],
 	];
 
-	var ui : Zui;
+	var ui : MainmenuUI;
 	var audio : AudioChannel;
 	var currentScreenResolution : Int;
 
@@ -31,11 +31,9 @@ class Mainmenu extends Trait {
 	
 	function init() {
 		
-		trace( "init" );
-
 		Scene.active.camera = Scene.active.getCamera( 'Camera_Mainmenu' );
 
-		UI.create( ui -> this.ui = ui );
+		ui = new MainmenuUI();
 
 		/*
 		#if !dev
@@ -56,35 +54,51 @@ class Mainmenu extends Trait {
 		trace(currentScreenResolution);
 		 */
 		 
-		Event.add( "play", () -> loadScene( 'Game' ) );
+		Event.add( "play", () -> Scene.setActive( "Game" ) );
 		Event.add( "quit", App.quit );
 		
 		notifyOnUpdate( update );
-		notifyOnRender2D( render2D );
+		notifyOnRender2D( ui.render );
 	}
 
 	function update() {
-
 		var gamepad = Input.getGamepad( 0 );
 		var keyboard = Input.getKeyboard();
 		var mouse = Input.getMouse();
-
 		if( keyboard.started( "escape" ) ) {
+			ui.visible = false;
 			App.quit();
 		} else {
-			if( keyboard.started( "space" ) || mouse.down() || gamepad.started("a") ) {
-				loadScene( 'Game' );
+			if( keyboard.started( "space" )
+				|| mouse.down()
+				|| gamepad.started("a") ) {
+				Scene.setActive( 'Game' );
 			}
 		}
 	}
+}
 
+private class MainmenuUI extends UI {
+
+	public inline function new( ?visible : Bool ) {
+		super( visible );
+	}
+
+	override function renderGraphics( g : kha.graphics2.Graphics ) {
+		trace("renderGraphics");
+		if( ui.window( Id.handle(), 10, 10, 400, 200, false ) ) {
+			ui.text( "ANTRUM" );
+		}
+	}
+	
+	/*
 	function render2D( g : kha.graphics2.Graphics ) {
 		g.end();
 		if( ui != null ) {
 			ui.begin( g );
 			
 			if( ui.window( Id.handle(), 20, 20, 300, 600, false ) ) {
-				if( ui.panel( Id.handle( { selected: true } ), "SETTINGS" ) ) {
+				if( ui.panel( Id.handle( { selected: true } ), "LUDUM DARE 64" ) ) {
 					//var resolution = ui.combo( Id.handle( { position: currentScreenResolution } ), [for(r in SCREEN_RESOLUTION) r[0]+'x'+r[1]], 'RESOLUTION' );
 					/*
 					var cfg = Config.raw;
@@ -104,7 +118,7 @@ class Mainmenu extends Trait {
 						RenderPathCreator.applyConfig();
 						Config.save();
 					}
-					*/
+					* /
 					if( ui.button( 'PLAY' ) ) {
 						loadScene( 'Game' );
 					}
@@ -117,11 +131,5 @@ class Mainmenu extends Trait {
 		}
 		g.begin( false );
 	}
-
-	function loadScene( name : String ) {
-		Scene.setActive( name, obj -> {
-			//trace( "scene activated:. "+obj );
-		} );
-	}
-
+	*/
 }

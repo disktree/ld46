@@ -117,6 +117,8 @@ class Vehicle {
 
 	public function update() {
 
+		trace(engineForce);
+
 		vehicle.applyEngineForce( engineForce, 2 );
 		vehicle.setBrake( breakingForce, 2 );
 		vehicle.applyEngineForce( engineForce, 3 );
@@ -177,7 +179,7 @@ class Vehicle {
 	}
 }
 
-class Wheel {
+private class Wheel {
 
 	public var isFrontWheel: Bool;
 	public var wheelRadius: Float;

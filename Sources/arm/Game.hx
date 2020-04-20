@@ -11,8 +11,6 @@ using armory.object.TransformExtension;
 
 typedef State = {
 	time : Float
-
-	///var missions : Array<Dynamic>;
 }
 
 class Game extends Trait {
@@ -34,18 +32,13 @@ class Game extends Trait {
 	#end
 
 	var time = 0.0;
-
-	var cameraPlay : CameraObject;
-	//var cameraIdle : CameraObject;
-	
+	var camera : CameraObject;
 	var ambulance : Ambulance;
 	var hospitals : Array<Hospital>;
 	var arrow : MeshObject;
-
 	var targets : Array<Target>;
 	var targetSpawnAreas : Array<Object>;
 	var minConcurrentTargets = 3;
-
 	var hud : HUD;
 	var ambientSound : SoundEffect;
 	
@@ -59,13 +52,11 @@ class Game extends Trait {
 		
 		trace( "init" );
 
-		//var state = loadState();
 		var scene = Scene.active;
+		//var state = loadState();
 
-		//cameraPlay = scene.getCamera( 'Camera_play' );
-		cameraPlay = scene.getCamera( 'Camera_top' );
-		//cameraIdle = scene.getCamera( 'Camera_idle' );Std.int( targetSpawnAreas.length*Math.random())
-		scene.camera = cameraPlay;
+		camera = scene.getCamera( 'Camera' );
+		scene.camera = camera;
 		
 		var ambulanceType = "jeep";
 		var ambulanceObject = scene.getMesh( 'Ambulance_$ambulanceType' );
@@ -104,8 +95,6 @@ class Game extends Trait {
 
 		//Uniforms.externalVec3Links.push( vec3Link );
 
-		//Event.send('color_white');
-
 		notifyOnUpdate( update );
 		notifyOnRender2D( (g:kha.graphics2.Graphics) -> {
 			hud.render( g );
@@ -137,7 +126,7 @@ class Game extends Trait {
 		var scene = Scene.active;
 		var vehicle = ambulance.vehicle;
 		
-		if( scene.camera == cameraPlay ) {
+		if( scene.camera == camera ) {
 			var camera = scene.camera;
 			var loc = ambulance.object.transform.world.getLoc();
 			scene.camera.transform.loc.x = loc.x;
@@ -154,7 +143,8 @@ class Game extends Trait {
 			return;
 		}
 
-	/* 	if( keyboard.down('1') ) {
+		/*
+		if( keyboard.down('1') ) {
 			Scene.active.camera = cameraPlay;
 		} else if( keyboard.down('2') ) {
 			Scene.active.camera = cameraIdle;
@@ -162,14 +152,14 @@ class Game extends Trait {
 
 		if( keyboard.started( "h" ) || gamepad.started('y') ) ambulance.honk();
 		
-
 		var forward = keyboard.down(keyUp);
 		var backward = keyboard.down(keyDown);
 		var left = keyboard.down(keyLeft);
 		var right = keyboard.down(keyRight);
 		var brake = keyboard.down("space");
 
-		/*
+		trace(forward);
+
 		if( forward ) {
 			ambulance.vehicle.forward();
 		} else if( backward ) {
@@ -191,38 +181,10 @@ class Game extends Trait {
 				if (ambulance.vehicle.steering > 0) ambulance.vehicle.steering -= step;
 				else ambulance.vehicle.steering += step;
 			}
-			/
+			*/
 		}
-		*/
 		
 		/*
-		if( forward ) {
-			ambulance.vehicle.forward();
-			//ambulance.vehicle.engineForce = ambulance.vehicle.maxEngineForce;
-		} else if( backward ) {
-			ambulance.vehicle.engineForce = - ambulance.vehicle.maxEngineForce;
-		} else if( brake ) {
-			ambulance.vehicle.breakingForce = 100;
-		} else {
-			ambulance.vehicle.engineForce = 0;
-			ambulance.vehicle.breakingForce = 50;
-		}
-
-		var maxSteering = 0.3;
-		if( left ) {
-			if( ambulance.vehicle.steering < maxSteering) ambulance.vehicle.steering += Time.step;
-		} else if (right) {
-			if( ambulance.vehicle.steering > -maxSteering) ambulance.vehicle.steering -= Time.step;
-		} else {
-			if( ambulance.vehicle.steering != 0) {
-				var step = Math.abs(ambulance.vehicle.steering) < Time.step ? Math.abs(ambulance.vehicle.steering) : Time.step;
-				if (ambulance.vehicle.steering > 0) ambulance.vehicle.steering -= step;
-				else ambulance.vehicle.steering += step;
-			}
-		}
-		*/
-		
-		//TODO!
 		if( Math.abs( gamepad.leftStick.y ) > GAMEPAD_STICK_LOWPASS ) {
 			vehicle.engineForce = gamepad.leftStick.y * (vehicle.maxEngineForce);
 			vehicle.breakingForce = 0;
@@ -240,7 +202,8 @@ class Game extends Trait {
 				else vehicle.steering += step;
 			}
 		}
-
+		*/
+		
 		ambulance.update();
 		
 		/////////////////////////////////////////////////////
