@@ -3,5 +3,5 @@
 
 Ludum Dare 46 entry.
 
-http://games.disktree.net/antrum
-https://github.com/disktree/antrum
+http://games.disktree.net/ld46
+https://github.com/disktree/ld46
