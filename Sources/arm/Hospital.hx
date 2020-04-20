@@ -8,16 +8,16 @@ class Hospital extends Trait {
 	@prop
 	public var id : String = "";
 
-	@prop
-	public var capacity : Int = 1000;
+	//@prop
+	//public var capacity : Int = 1000;
 
 	public var numPatients(get,never) : Int;
 	inline function get_numPatients() return patients.length;
 
-	public var distance(default,null) : Float;
+	public var distance : Float;
 
 	var patients : Array<Patient> = [];
-	var trigger : MeshObject;
+	//var trigger : MeshObject;
 
 	public function new() {
 		super();
@@ -29,6 +29,7 @@ class Hospital extends Trait {
 	}
 
 	function update() {
+
 	}
 
 	public function admitPatient( patient : Patient ) {

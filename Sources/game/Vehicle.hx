@@ -15,7 +15,7 @@ class Vehicle {
 	public var engineForce = 0.0;
 	public var breakingForce = 0.0;
 	
-	public var maxEngineForce = 10000.0;
+	public var maxEngineForce = 4000.0;
 	public var maxBreakingForce = 500.0;
 	
 	var wheelNamePrefix = "Wheel";
@@ -29,7 +29,7 @@ class Vehicle {
 	var vehicle : bullet.Bt.RaycastVehicle = null;
 	var chassis : bullet.Bt.RigidBody;
 
-	var chassisMass = 1500; //600.0;
+	var chassisMass = 1200; //600.0;
 	var wheelFriction = 2000;
 	var suspensionStiffness = 20.0;
 	var suspensionDamping = 2.3;
@@ -106,7 +106,7 @@ class Vehicle {
 
 	public function backward( ?force : Float ) {
 		if( force == null ) force = maxEngineForce;
-		engineForce = -(force/4);
+		engineForce = -(force/2);
 		breakingForce = 20;
 	}
 

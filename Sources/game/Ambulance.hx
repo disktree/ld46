@@ -8,6 +8,7 @@ class Ambulance {
 	public var fuel(default,null) = 1.0;
 	public var capacity(default,null) = 1;
 	public var patient : Patient;
+	public var fuelConsumption = 5.0;
 
 	//var arrow : MeshObject;
 	var horn : SoundEffect;
@@ -20,7 +21,7 @@ class Ambulance {
 	}
 
 	public function update() {
-		fuel -= Time.delta / 1000;
+		fuel -= Time.delta / 1000 * fuelConsumption;
 		if( fuel > 0 ) {
 			vehicle.update();
 		}

@@ -15,6 +15,7 @@ import iron.object.CameraObject;
 import iron.object.MeshObject;
 import iron.object.Transform;
 import iron.object.Object;
+import iron.object.Uniforms;
 import iron.system.Audio;
 import iron.system.Input;
 import iron.system.Time;
@@ -24,3 +25,5 @@ import kha.audio1.AudioChannel;
 
 //import Math.PI;
 import App.PI2;
+
+using armory.object.TransformExtension;
