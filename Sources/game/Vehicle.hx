@@ -15,21 +15,21 @@ class Vehicle {
 	public var engineForce = 0.0;
 	public var breakingForce = 0.0;
 	
-	public var maxEngineForce = 3000.0;
+	public var maxEngineForce = 10000.0;
 	public var maxBreakingForce = 500.0;
 	
 	var wheelNamePrefix = "Wheel";
 	var wheels: Array<Object> = [];
 	
 	var target : Object;
-	var physics: PhysicsWorld;
-	var transform: Transform;
-	var camera: CameraObject;
+	var physics : PhysicsWorld;
+	var transform : Transform;
+	var camera : CameraObject;
 	
-	var vehicle: bullet.Bt.RaycastVehicle = null;
-	var chassis: bullet.Bt.RigidBody;
+	var vehicle : bullet.Bt.RaycastVehicle = null;
+	var chassis : bullet.Bt.RigidBody;
 
-	var chassisMass = 500; //600.0;
+	var chassisMass = 1500; //600.0;
 	var wheelFriction = 2000;
 	var suspensionStiffness = 20.0;
 	var suspensionDamping = 2.3;
@@ -101,13 +101,13 @@ class Vehicle {
 	public function forward( ?force : Float ) {
 		if( force == null ) force = maxEngineForce;
 		engineForce = force;
-		breakingForce = 0;
+		breakingForce = 60;
 	}
 
 	public function backward( ?force : Float ) {
 		if( force == null ) force = maxEngineForce;
-		engineForce = -force;
-		breakingForce = 0;
+		engineForce = -(force/4);
+		breakingForce = 20;
 	}
 
 	public function rollout() {

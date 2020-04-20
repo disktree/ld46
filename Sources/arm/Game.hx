@@ -10,7 +10,7 @@ import App.GAMEPAD_STICK_LOWPASS;
 using armory.object.TransformExtension;
 
 typedef State = {
-	var count : Int;
+	time : Float
 
 	///var missions : Array<Dynamic>;
 }
@@ -44,8 +44,9 @@ class Game extends Trait {
 	var ambulance : Ambulance;
 
 	var targets : Array<Target>;
-	var minConcurrentTargets = 1;
-	var maxConcurrentTargets = 3;
+	var targetSpawnAreas : Array<Object>;
+	var minConcurrentTargets = 2;
+	var maxConcurrentTargets = 5;
 
 	var hud : HUD;
 	var log : Log;
@@ -67,18 +68,14 @@ class Game extends Trait {
 		//cameraPlay = scene.getCamera( 'Camera_play' );
 		cameraPlay = scene.getCamera( 'Camera_top' );
 		//cameraIdle = scene.getCamera( 'Camera_idle' );
-		//var cameraPreview = scene.getCamera( 'Camera_preview' );
-		//var c = scene.getCamera( 'Camera_third' );
-		//scene.camera = c;
 		//scene.camera = cameraIdle;
 		scene.camera = cameraPlay;
 		
 		var ambulanceType = "jeep";
 		var ambulanceObject = scene.getMesh( 'Ambulance_$ambulanceType' );
-		// var ambulanceObject = scene.getMesh( "Ambulance_van" );
-		ambulanceObject.transform.loc.set( 0, 0, 2 );
-		
-		//ambulance = new Ambulance( ambulanceObject, 'Wheel_$ambulanceType' );
+		var startLoc = scene.getEmpty( 'StartLoc' );
+		ambulanceObject.transform.loc = startLoc.transform.loc;
+		ambulanceObject.transform.buildMatrix();
 		ambulance = new Ambulance( ambulanceObject, ambulanceType );
 
 		arrow = scene.getMesh('Arrow');
@@ -94,15 +91,19 @@ class Game extends Trait {
 		}
 		if( hospitals.length == 0 ) trace('no hospital found');
 
-		targets = [for(i in 0...minConcurrentTargets) createTarget() ];
-
-		hud = new HUD( "///" );
+		targetSpawnAreas =  scene.getGroup( 'TargetSpawnAreas' );
+		//trace( targetSpawnAreas.length+' target spawn areas' );
+		
+		hud = new HUD( "ANTRUM" );
 		log = new Log( false );
-
-		SoundEffect.load( 'traffic', s -> ambientSound = s.play( 0.3, true ) );
+		
+//		SoundEffect.load( 'traffic', s -> ambientSound = s.play( 0.3, true ) );
+		
+		targets = [];
+		for(i in 0...minConcurrentTargets) spawnTarget();
 
 		notifyOnUpdate( update );
-		notifyOnRender2D( g -> {
+		notifyOnRender2D( (g:kha.graphics2.Graphics) -> {
 			hud.render( g );
 			log.render( g );
 		} );
@@ -137,7 +138,7 @@ class Game extends Trait {
 			return;
 		}
 
-		if( keyboard.started( "h" ) ) ambulance.honk();
+		if( keyboard.started( "h" )  || gamepad.started('y') ) ambulance.honk();
 		
 		var forward = keyboard.down(keyUp);
 		var backward = keyboard.down(keyDown);
@@ -294,41 +295,6 @@ class Game extends Trait {
 	//	hud.text = info;
 
 		/*
-		switch ambulance.state {
-		case free:
-		case mission(m):
-		}
-
-		for( mission in missions ) {
-			mission.update();
-			if( mission.health <= 0 ) {
-				trace("Mission failed");
-				mission.end();
-				missions.remove( mission );
-				mission = null;
-			} else {
-				
-				/*
-				var direction = ambulance.object.transform.world.getLoc().sub( mission.trigger.transform.world.getLoc() );
-				var angleZ = Math.atan( direction.y / direction.x ) + PI2;
-				if( direction.x < 0 ) angleZ += Math.PI;
-				arrow.transform.loc.set( ambulance.loc.x, ambulance.loc.y, 3 );
-				arrow.transform.setRotation( 0, 0, angleZ );
-				* /
-				
-				var distanceToMission = ambulance.distanceTo( mission.loc );
-				if( distanceToMission <= 15 ) {
-					trace("NEAR MISSION GOAL");
-					if( mission.arrived( ambulance.object ) ) {
-						trace("ARRIVED AT MISSION");
-						//mission.end();
-						//missions.remove( mission );
-						mission = null;
-					}
-				}
-			}
-		}
-		
 		// --- User input
 
 		if( gamepad.started('y') ) ambulance.honk();
@@ -352,31 +318,44 @@ class Game extends Trait {
 			}
 			* /
 		}
-
-		ambulance.update();
 		*/
 	}
 
 	
-	function createTarget() {
-		///TODO random select from a list of mission origin objects in world 
-		var v = 20;
-		var sx = -v + (v * 2 * Math.random() );
-		var sy = -v + (v * 2 * Math.random() );
-		sx = 0;
-		sy = 10;
+	function spawnTarget() {
+		
+		var health = 1 - (Math.random()*0.3);
+		var sickness = Math.random() * 1.0;
+		health = Math.max( 0, health );
+		trace("health"+health);
+		trace("sickness"+sickness);
+		var patient = new Patient( health, sickness );
+		
+		var area = targetSpawnAreas[Std.int( targetSpawnAreas.length*Math.random())];
+		var loc = area.transform.loc;
+		var dim = area.transform.dim;
+		// var px = loc.x + (dim.x * 2 * Math.random() - (dim.x/2));
+		// var py = loc.y + (dim.y * 2 * Math.random() - (dim.y/2));
+		var px = loc.x;
+		var py = loc.y;
+		//trace(px+":"+py);
 
-		var patient = new Patient( 1.0, 0.5 );
-		var target = new Target( new Vec3( sx, sy ), patient);
-
-		return target;
+		var target = new Target( new Vec3( px, py ), patient);
+		targets.push( target );
 	}
 	
 	function saveState() {
+		
+		var data = {
+			time: time
+		};
+		/*
 		var count = Storage.data.count;
 		count = (count == null) ? 0 : count+1;
 		Storage.data = { count: count };
 		Storage.save();
+		*/
+
 		/* #if kha_krom
 		var state = { time: 23 }; //TODO
 		var bytes = Bytes.ofString( Json.stringify( state ) );
