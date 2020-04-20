@@ -37,12 +37,14 @@ class Mainmenu extends Trait {
 
 		UI.create( ui -> this.ui = ui );
 
+		/*
 		#if !dev
 		Data.getSound( 'mainmenu_ambient.wav', (s:kha.Sound) -> {
 			audio = Audio.play( s, true, false );
 			audio.volume = 0.7;
 		});
 		#end
+		*/
 
 		/*
 		for( i in 0...SCREEN_RESOLUTION.length ) {
@@ -69,12 +71,11 @@ class Mainmenu extends Trait {
 
 		if( keyboard.started( "escape" ) ) {
 			App.quit();
+		} else {
+			if( keyboard.started( "space" ) || mouse.down() || gamepad.started("a") ) {
+				loadScene( 'Game' );
+			}
 		}
-		/*
-		if( keyboard.started( "space" ) || mouse.down() || gamepad.started("a") ) {
-			loadScene( 'Game' );
-		}
-		*/
 	}
 
 	function render2D( g : kha.graphics2.Graphics ) {

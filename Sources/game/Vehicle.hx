@@ -29,7 +29,7 @@ class Vehicle {
 	var vehicle: bullet.Bt.RaycastVehicle = null;
 	var chassis: bullet.Bt.RigidBody;
 
-	var chassisMass = 500; /////600.0;
+	var chassisMass = 500; //600.0;
 	var wheelFriction = 2000;
 	var suspensionStiffness = 20.0;
 	var suspensionDamping = 2.3;

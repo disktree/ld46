@@ -36,7 +36,7 @@ class Game extends Trait {
 	var time = 0.0;
 
 	var cameraPlay : CameraObject;
-	var cameraIdle : CameraObject;
+	//var cameraIdle : CameraObject;
 	
 	var arrow : MeshObject;
 
@@ -61,24 +61,30 @@ class Game extends Trait {
 		
 		trace( "init" );
 
+		//var state = loadState();
 		var scene = Scene.active;
 
-		cameraPlay = scene.getCamera( 'Camera_play' );
-		cameraIdle = scene.getCamera( 'Camera_idle' );
-		scene.camera = cameraPlay;
+		//cameraPlay = scene.getCamera( 'Camera_play' );
+		cameraPlay = scene.getCamera( 'Camera_top' );
+		//cameraIdle = scene.getCamera( 'Camera_idle' );
+		//var cameraPreview = scene.getCamera( 'Camera_preview' );
+		//var c = scene.getCamera( 'Camera_third' );
+		//scene.camera = c;
 		//scene.camera = cameraIdle;
-
-		var ground = scene.getMesh( 'Ground' );
-
-		var ambulanceObject = scene.getMesh( "Ambulance_jeep" );
+		scene.camera = cameraPlay;
+		
+		var ambulanceType = "jeep";
+		var ambulanceObject = scene.getMesh( 'Ambulance_$ambulanceType' );
 		// var ambulanceObject = scene.getMesh( "Ambulance_van" );
 		ambulanceObject.transform.loc.set( 0, 0, 2 );
-		ambulance = new Ambulance( ambulanceObject );
+		
+		//ambulance = new Ambulance( ambulanceObject, 'Wheel_$ambulanceType' );
+		ambulance = new Ambulance( ambulanceObject, ambulanceType );
 
 		arrow = scene.getMesh('Arrow');
-
+		
 		hospitals = [];
-		for( h in scene.getGroup( 'Hospitals' ) ) {
+		for( h in scene.getGroup( 'Hospital' ) ) {
 			var t = h.getTrait( Hospital );
 			if( t == null ) {
 				trace('WARNING: mesh in hospital group is missing hospital trait');
@@ -86,42 +92,12 @@ class Game extends Trait {
 				hospitals.push( t );
 			}
 		}
-
-		/*
-		var scene = Scene.active;
-		
-		scene.camera = scene.getCamera( 'Camera_Game' );
-		
-		cameraTarget = scene.getEmpty( "CameraTarget" );
-		arrow = scene.getMesh( "DirectionArrow" );
-		ambulance = new Ambulance( scene.getMesh( "Ambulance" ) );
-
-		//sickness = new Sickness();
-
-		hospitals =  [];
-		for( obj in scene.meshes ) {
-			var t  = obj.getTrait( Hospital );
-			if( t != null ) {
-				hospitals.push( t );
-				//trace(obj.properties);
-			}
-		}
-		trace(hospitals.length+' hospitals found' ); 
-
-		//var state = loadState();
-
-		missions = [];
-		createMission();
-		
-		notifyOnUpdate( update );
-		*/
+		if( hospitals.length == 0 ) trace('no hospital found');
 
 		targets = [for(i in 0...minConcurrentTargets) createTarget() ];
 
-		hud = new HUD( "CROSS" );
+		hud = new HUD( "///" );
 		log = new Log( false );
-		//for( i in 0...100 ) log.log(i+" DISKTREE");
-		//log.clear();
 
 		SoundEffect.load( 'traffic', s -> ambientSound = s.play( 0.3, true ) );
 
@@ -142,10 +118,14 @@ class Game extends Trait {
 		//var sec = Std.int( time );
 		//var ms = Std.int( (time - sec) * 100);
 
-		if( Scene.active.camera == cameraPlay ) {
-			var camera = Scene.active.camera;
+		var scene = Scene.active;
+		
+		if( scene.camera == cameraPlay ) {
+			var camera = scene.camera;
 			var loc = ambulance.object.transform.world.getLoc();
-			Scene.active.camera.transform.loc.set( loc.x, loc.y, 100 ); //TODO
+			scene.camera.transform.loc.x = loc.x;
+			scene.camera.transform.loc.y = loc.y;
+			scene.camera.transform.buildMatrix();
 		}
 		
 		var gamepad = Input.getGamepad( 0 );
@@ -165,11 +145,13 @@ class Game extends Trait {
 		var right = keyboard.down(keyRight);
 		var brake = keyboard.down("space");
 
+		/*
 		if( keyboard.down('1') ) {
 			Scene.active.camera = cameraPlay;
 		} else if( keyboard.down('2') ) {
 			Scene.active.camera = cameraIdle;
 		}
+		*/
 
 		/*
 		if( forward ) {
@@ -205,10 +187,10 @@ class Game extends Trait {
 			ambulance.vehicle.breakingForce = 100;
 		} else {
 			ambulance.vehicle.engineForce = 0;
-			ambulance.vehicle.breakingForce = 20;
+			ambulance.vehicle.breakingForce = 50;
 		}
 
-		var maxSteering = 0.2;
+		var maxSteering = 0.3;
 		if( left ) {
 			if( ambulance.vehicle.steering < maxSteering) ambulance.vehicle.steering += Time.step;
 		} else if (right) {
@@ -250,13 +232,14 @@ class Game extends Trait {
 			@:privateAccess hospital.distance = ambulance.object.transform.loc.distanceTo( hospital.object.transform.loc );
 		}
 
+		/*
 		var hospital = hospitals[0];
 		var direction = ambulance.object.transform.world.getLoc().sub( hospital.object.transform.world.getLoc() );
 		var angleZ = Math.atan( direction.y / direction.x ) + PI2;
 		if( direction.x < 0 ) angleZ += Math.PI;
 		arrow.transform.loc.set( ambulance.object.transform.loc.x, ambulance.object.transform.loc.y, 3 );
 		arrow.transform.setRotation( 0, 0, angleZ );
-
+		*/
 
 		if( ambulance.patient == null ) {
 			for( target in targets ) {
@@ -295,10 +278,19 @@ class Game extends Trait {
 			//createTarget();
 		}
 		
-		var info = ''; //'FUEL: '+ambulance.fuel; //targets.length+' TARGETS';
-		info += hospitals.length+' HOSPITALS\n';
+		var info = '';
+		if( ambulance.patient == null ) {
+			for( t in targets ) {
+				info += 'TARGET '+t.patient.health+'\n';
+			}
+		}
+		hud.text = info;
+
+		/*
+		var info += hospitals.length+' HOSPITALS\n';
 		for( h in hospitals ) info += h.id+'\n';
 		if( ambulance.patient != null ) info += 'PATIENT: '+ambulance.patient+'\n';
+		*/
 	//	hud.text = info;
 
 		/*

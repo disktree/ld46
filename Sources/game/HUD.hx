@@ -50,7 +50,7 @@ class HUD extends UI {
 	}
 
 	override function renderGraphics( g : kha.graphics2.Graphics ) {
-		if( ui.window( Id.handle(), 0, 0, 600, 100, false ) ) {
+		if( ui.window( Id.handle(), 10, 10, 600, 200, false ) ) {
 			ui.text( text );
 		}
 	}
