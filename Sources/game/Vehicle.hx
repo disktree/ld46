@@ -10,28 +10,26 @@ import armory.trait.physics.PhysicsWorld;
 @:keep
 class Vehicle {
 
-	var wheel0Name: String = "Wheel0";
-	var wheel1Name: String = "Wheel1";
-	var wheel2Name: String = "Wheel2";
-	var wheel3Name: String = "Wheel3";
-
+	
 	public var steering = 0.0;
 	public var engineForce = 0.0;
 	public var breakingForce = 0.0;
-
-	public var maxEngineForce = 5000.0;
+	
+	public var maxEngineForce = 3000.0;
 	public var maxBreakingForce = 500.0;
-
+	
+	var wheelNamePrefix = "Wheel";
+	var wheels: Array<Object> = [];
+	
 	var target : Object;
 	var physics: PhysicsWorld;
 	var transform: Transform;
 	var camera: CameraObject;
-
-	var wheels: Array<Object> = [];
+	
 	var vehicle: bullet.Bt.RaycastVehicle = null;
 	var chassis: bullet.Bt.RigidBody;
 
-	var chassisMass = 800; /////600.0;
+	var chassisMass = 500; /////600.0;
 	var wheelFriction = 2000;
 	var suspensionStiffness = 20.0;
 	var suspensionDamping = 2.3;
@@ -39,18 +37,15 @@ class Vehicle {
 	var suspensionRestLength = 0.3;
 	var rollInfluence = 0.1;
 
-	public function new( target : Object ) {
+	public function new( target : Object, wheelNamePrefix = "Wheel" ) {
 
 		this.target = target;
+		this.wheelNamePrefix = wheelNamePrefix;
 
 		physics = armory.trait.physics.PhysicsWorld.active;
 		transform = target.transform;
 
-		wheels = [];
-		wheels[0] = target.getChild( wheel0Name );
-		wheels[1] = target.getChild( wheel1Name );
-		wheels[2] = target.getChild( wheel2Name );
-		wheels[3] = target.getChild( wheel3Name );
+		wheels = [for(i in 0...4) target.getChild( '$wheelNamePrefix$i' ) ];
 
 		var chassisShape = new bullet.Bt.BoxShape( new bullet.Bt.Vector3( transform.dim.x/2, transform.dim.y/2, transform.dim.z/2 ) );
 		var compound = new bullet.Bt.CompoundShape();
@@ -126,27 +121,6 @@ class Vehicle {
 		vehicle.setBrake( breakingForce, 2 );
 		vehicle.applyEngineForce( engineForce, 3 );
 		vehicle.setBrake( breakingForce, 3 );
-
-		/*
-		vehicle.setSteeringValue( steering, 0 );
-		vehicle.setSteeringValue( steering, 1 );
-		//////////////
-		//vehicle.applyEngineForce( engineForce, 0 );
-		//vehicle.applyEngineForce( engineForce, 1 );
-		vehicle.applyEngineForce( engineForce, 2 );
-		vehicle.applyEngineForce( engineForce, 3 );
-
-		//vehicle.setBrake( breakingForce, 0 );
-		//vehicle.setBrake( breakingForce, 1 );
-		vehicle.setBrake( breakingForce, 2 );
-		vehicle.setBrake( breakingForce, 3 );
-*/
-		/*
-		vehicle.applyEngineForce( engineForce, 2 );
-		vehicle.setBrake( breakingForce, 2 );
-		vehicle.applyEngineForce( engineForce, 3 );
-		vehicle.setBrake( breakingForce, 3 );
-		*/
 		
 		vehicle.setSteeringValue( steering, 0 );
 		vehicle.setSteeringValue( steering, 1 );
@@ -222,7 +196,7 @@ class Wheel {
 		locZ = vehicleTransform.dim.z / 2 + transform.loc.z;
 	}
 
-	public function getConnectionPoint(): bullet.Bt.Vector3 {
+	public inline function getConnectionPoint(): bullet.Bt.Vector3 {
 		return new bullet.Bt.Vector3(locX, locY, locZ);
 	}
 }
